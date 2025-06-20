@@ -4,7 +4,7 @@ const profileController = require('./ProfileController');
 const { 
   updateProfileValidator, 
   changePasswordValidator 
-} = require('./profileValidator');
+} = require('./ProfileValidator');
 const validationHandler = require('../../../middleware/validationHandler');
 const verifyAdminToken = require('../../../middleware/jwtConfig');
 
