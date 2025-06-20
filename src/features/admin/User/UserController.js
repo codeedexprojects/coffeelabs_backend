@@ -23,7 +23,6 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// Get specific user by ID (admin access)
 exports.getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId)
