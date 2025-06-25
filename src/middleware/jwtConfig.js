@@ -20,12 +20,11 @@ const verifyAdminToken = (allowedRoles = []) => {
     try {
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         
-        // If roles are provided, ensure the user has one of them
         if (allowedRoles.length && !allowedRoles.includes(decodedToken.role)) {
             return res.status(401).json({ message: "Unauthorized. Access denied." });
         }
 
-        req.user = decodedToken; // Attach decoded data to request
+        req.user = decodedToken; 
         next();
 
     } catch (err) {

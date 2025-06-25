@@ -8,7 +8,6 @@ loadEnv();
 
 const PORT = process.env.PORT || 8000;
 
-// Connect to MongoDB
 connectDB()
   .then(() => {
     app.listen(PORT, () => {

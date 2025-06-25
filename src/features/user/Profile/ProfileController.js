@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 exports.getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
-      .select('-password -__v -googleId -appleId -playerId -isActive');
+      .select('-password -__v -googleId  -isActive');
     
     if (!user) {
       return res.status(404).json({ 
@@ -43,7 +43,6 @@ exports.updateProfile = async (req, res) => {
       });
     }
 
-    // Check for duplicate email or phone
     const duplicateConditions = [];
     if (email && email !== user.email) duplicateConditions.push({ email });
     if (phone && phone !== user.phone) duplicateConditions.push({ phone });
@@ -72,7 +71,6 @@ exports.updateProfile = async (req, res) => {
       }
     }
 
-    // Update fields
     if (name) user.name = name;
     if (email) user.email = email;
     if (phone) user.phone = phone;
@@ -80,7 +78,7 @@ exports.updateProfile = async (req, res) => {
     await user.save();
 
     const updatedUser = await User.findById(user._id)
-      .select('-password -__v -googleId -appleId -playerId -isActive');
+      .select('-password -__v -googleId  -isActive');
 
     res.status(200).json({
       success: true,
@@ -111,7 +109,6 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    // Verify current password
     const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({ 
@@ -121,7 +118,6 @@ exports.changePassword = async (req, res) => {
       });
     }
 
-    // Update password
     user.password = newPassword;
     await user.save();
 

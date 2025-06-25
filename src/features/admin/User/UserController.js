@@ -1,6 +1,77 @@
 const User = require('../../user/auth/UserModel');
+const bcrypt = require('bcrypt');
 
-// Get all users (for admin)
+
+
+exports.createUser = async (req, res) => {
+  const { name, email, phone, password, role } = req.body;
+
+  try {
+    // Validation
+    if (!name || !email || !phone || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ message: 'Name, email, phone, and password are required' }]
+      });
+    }
+
+    // Check if email already exists
+    const existingEmailUser = await User.findOne({ email });
+    if (existingEmailUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ field: 'email', message: 'Email already exists' }]
+      });
+    }
+
+    // Check if phone already exists
+    const existingPhoneUser = await User.findOne({ phone });
+    if (existingPhoneUser) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: [{ field: 'phone', message: 'Phone number already exists' }]
+      });
+    }
+
+    // Hash password
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Create new user
+    const newUser = new User({
+      name,
+      email,
+      phone,
+      password: hashedPassword,
+      role: role || 'user' // Default role
+    });
+
+    await newUser.save();
+
+    // Return user without sensitive data
+    const createdUser = await User.findById(newUser._id)
+      .select('-password -__v -refreshToken');
+
+    res.status(201).json({
+      success: true,
+      message: 'User created successfully',
+      data: createdUser
+    });
+  } catch (error) {
+    console.error('Create User Error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      errors: [{ message: error.message }]
+    });
+  }
+};
+
+
+
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find()
@@ -51,7 +122,6 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-// Update user by ID (admin access)
 exports.updateUserById = async (req, res) => {
   const { name, email, phone, role } = req.body;
 
@@ -66,7 +136,6 @@ exports.updateUserById = async (req, res) => {
       });
     }
 
-    // Check for duplicate email or phone
     if (email && email !== user.email) {
       const existingUser = await User.findOne({ email, _id: { $ne: user._id } });
       if (existingUser) {
@@ -89,7 +158,6 @@ exports.updateUserById = async (req, res) => {
       }
     }
 
-    // Update allowed fields
     if (name) user.name = name;
     if (email) user.email = email;
     if (phone) user.phone = phone;
@@ -115,7 +183,6 @@ exports.updateUserById = async (req, res) => {
   }
 };
 
-// Delete user by ID (admin access)
 exports.deleteUserById = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.userId);
