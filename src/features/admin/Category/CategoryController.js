@@ -38,11 +38,24 @@ exports.createCategory = async (req, res) => {
     }
 };
 
-// get all categories
+// get all categories with pagination
 exports.getCategories = async (req, res) => {
     try {
-        const categories = await Category.find();
-        res.status(200).json(categories);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const total = await Category.countDocuments();
+        const categories = await Category.find()
+            .skip(skip)
+            .limit(limit);
+
+        res.status(200).json({
+            totalItems: total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            categories
+        });
     } catch (err) {
         res.status(500).json({ 
             message: 'Error fetching categories', 
@@ -51,11 +64,24 @@ exports.getCategories = async (req, res) => {
     }
 };
 
-// get active categories only
+// get active categories only with pagination
 exports.getActiveCategories = async (req, res) => {
     try {
-        const categories = await Category.find({ isActive: true });
-        res.status(200).json(categories);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const total = await Category.countDocuments({ isActive: true });
+        const categories = await Category.find({ isActive: true })
+            .skip(skip)
+            .limit(limit);
+
+        res.status(200).json({
+            totalItems: total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            categories
+        });
     } catch (err) {
         res.status(500).json({ 
             message: 'Error fetching active categories', 
@@ -137,7 +163,7 @@ exports.deleteCategory = async (req, res) => {
             return res.status(404).json({ message: 'Category not found' });
         }
 
-        const imagePath = `./uploads/category/${category.image}`;
+        const imagePath = path.join(__dirname, `../uploads/admin/category/${category.image}`);
         if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);
         }
@@ -152,9 +178,12 @@ exports.deleteCategory = async (req, res) => {
     }
 };
 
-// search category by name
+// search category by name with pagination
 exports.searchCategory = async (req, res) => {
     const { name, isActive } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
     
     try {
         const query = {};
@@ -165,8 +194,17 @@ exports.searchCategory = async (req, res) => {
             query.isActive = isActive === 'true';
         }
 
-        const categories = await Category.find(query);
-        res.status(200).json(categories);
+        const total = await Category.countDocuments(query);
+        const categories = await Category.find(query)
+            .skip(skip)
+            .limit(limit);
+
+        res.status(200).json({
+            totalItems: total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            categories
+        });
     } catch (err) {
         res.status(500).json({ 
             message: 'Error searching categories', 

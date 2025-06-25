@@ -50,11 +50,25 @@ exports.createSubCategory = async (req, res) => {
     }
 };
 
-// get all subcategories
+// get all subcategories with pagination
 exports.getSubCategories = async (req, res) => {
     try {
-        const subcategories = await SubCategory.find().populate('category_id', 'name isActive');
-        res.status(200).json(subcategories);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const total = await SubCategory.countDocuments();
+        const subcategories = await SubCategory.find()
+            .populate('category_id', 'name isActive')
+            .skip(skip)
+            .limit(limit);
+
+        res.status(200).json({
+            totalItems: total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            subcategories
+        });
     } catch (err) {
         res.status(500).json({ 
             message: 'Error fetching subcategories', 
@@ -63,12 +77,25 @@ exports.getSubCategories = async (req, res) => {
     }
 };
 
-// get active subcategories only
+// get active subcategories only with pagination
 exports.getActiveSubCategories = async (req, res) => {
     try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const total = await SubCategory.countDocuments({ isActive: true });
         const subcategories = await SubCategory.find({ isActive: true })
-            .populate('category_id', 'name isActive');
-        res.status(200).json(subcategories);
+            .populate('category_id', 'name isActive')
+            .skip(skip)
+            .limit(limit);
+
+        res.status(200).json({
+            totalItems: total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            subcategories
+        });
     } catch (err) {
         res.status(500).json({ 
             message: 'Error fetching active subcategories', 
@@ -77,14 +104,27 @@ exports.getActiveSubCategories = async (req, res) => {
     }
 };
 
-// get subcategories by category ID
+// get subcategories by category ID with pagination
 exports.getSubCategoriesByCategory = async (req, res) => {
     const { categoryId } = req.params;
     
     try {
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const total = await SubCategory.countDocuments({ category_id: categoryId });
         const subcategories = await SubCategory.find({ category_id: categoryId })
-            .populate('category_id', 'name isActive');
-        res.status(200).json(subcategories);
+            .populate('category_id', 'name isActive')
+            .skip(skip)
+            .limit(limit);
+
+        res.status(200).json({
+            totalItems: total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            subcategories
+        });
     } catch (err) {
         res.status(500).json({ 
             message: 'Error fetching subcategories', 
@@ -177,7 +217,7 @@ exports.deleteSubCategory = async (req, res) => {
             return res.status(404).json({ message: 'Subcategory not found' });
         }
 
-        const imagePath = `./uploads/subcategory/${subcategory.image}`;
+        const imagePath = path.join(__dirname, `../uploads/admin/subcategory/${subcategory.image}`);
         if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);
         }
@@ -192,9 +232,12 @@ exports.deleteSubCategory = async (req, res) => {
     }
 };
 
-// search subcategory
+// search subcategory with pagination
 exports.searchSubCategory = async (req, res) => {
     const { name, category_id, isActive } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
     
     try {
         const query = {};
@@ -208,8 +251,18 @@ exports.searchSubCategory = async (req, res) => {
             query.isActive = isActive === 'true';
         }
 
-        const subcategories = await SubCategory.find(query).populate('category_id', 'name isActive');
-        res.status(200).json(subcategories);
+        const total = await SubCategory.countDocuments(query);
+        const subcategories = await SubCategory.find(query)
+            .populate('category_id', 'name isActive')
+            .skip(skip)
+            .limit(limit);
+
+        res.status(200).json({
+            totalItems: total,
+            totalPages: Math.ceil(total / limit),
+            currentPage: page,
+            subcategories
+        });
     } catch (err) {
         res.status(500).json({ 
             message: 'Error searching subcategories', 
