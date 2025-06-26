@@ -624,3 +624,91 @@
 {"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T05:49:42.345Z"}
 {"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T05:50:19.112Z"}
 {"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T05:50:19.128Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T05:51:07.889Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T05:51:07.901Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T10:23:14.043Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T10:23:14.187Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T10:32:52.237Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T10:32:52.286Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T10:34:02.729Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T10:34:02.742Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T10:48:09.126Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T10:48:09.139Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T10:48:16.434Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T10:48:16.460Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T10:48:27.092Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T10:48:27.119Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T10:49:19.666Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T10:49:19.723Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T10:58:08.701Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T10:58:09.010Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T10:59:59.701Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T10:59:59.712Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:00:08.032Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:00:08.043Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:00:13.928Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:00:13.938Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:00:56.541Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:00:56.549Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:01:05.751Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:01:05.761Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:01:20.701Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:01:20.729Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:01:31.389Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:01:31.401Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:01:36.614Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:01:36.636Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:01:47.812Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:01:47.830Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:01:51.615Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:01:51.631Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:01:57.613Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:01:57.656Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:02:03.465Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:02:03.475Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:02:12.020Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:02:12.034Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:02:21.149Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:02:21.159Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:02:28.870Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:02:28.885Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:02:35.156Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:02:35.178Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:04:01.207Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:04:01.214Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:04:10.727Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:04:10.736Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:04:16.824Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:04:16.832Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:04:20.448Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:04:20.460Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:04:25.766Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:04:25.787Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:04:41.628Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:04:41.680Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:11:12.176Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:11:12.184Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:11:18.880Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:11:18.888Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:11:35.312Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:11:35.330Z"}
+{"level":"error","message":"Cannot destructure property 'name' of 'req.body' as it is undefined. Cannot destructure property 'name' of 'req.body' as it is undefined.","stack":"TypeError: Cannot destructure property 'name' of 'req.body' as it is undefined.\n    at exports.createProduct (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\src\\features\\admin\\Product\\ProductController.js:10:9)\n    at Layer.handleRequest (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at multerMiddleware (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\multer\\lib\\make-middleware.js:19:41)\n    at Layer.handleRequest (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\src\\middleware\\jwtConfig.js:28:9\n    at Layer.handleRequest (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\router\\lib\\layer.js:152:17)\n    at next (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\router\\lib\\route.js:157:13)\n    at Route.dispatch (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\router\\lib\\route.js:117:3)","timestamp":"2025-06-26T11:12:24.460Z"}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"images","level":"error","message":"Unexpected field Unexpected field","name":"MulterError","stack":"MulterError: Unexpected field\n    at wrappedFileFilter (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\multer\\index.js:40:19)\n    at Multipart.<anonymous> (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\multer\\lib\\make-middleware.js:123:7)\n    at Multipart.emit (node:events:519:28)\n    at HeaderParser.cb (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:358:14)\n    at HeaderParser.push (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:394:37)\n    at feed (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\streamsearch\\lib\\sbmh.js:200:10)\n    at SBMH.push (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\streamsearch\\lib\\sbmh.js:104:16)\n    at Multipart._write (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:567:19)\n    at writeOrBuffer (node:internal/streams/writable:564:12)","storageErrors":[],"timestamp":"2025-06-26T11:15:49.642Z"}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"images","level":"error","message":"Unexpected field Unexpected field","name":"MulterError","stack":"MulterError: Unexpected field\n    at wrappedFileFilter (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\multer\\index.js:40:19)\n    at Multipart.<anonymous> (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\multer\\lib\\make-middleware.js:123:7)\n    at Multipart.emit (node:events:519:28)\n    at HeaderParser.cb (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:358:14)\n    at HeaderParser.push (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:394:37)\n    at feed (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\streamsearch\\lib\\sbmh.js:200:10)\n    at SBMH.push (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\streamsearch\\lib\\sbmh.js:104:16)\n    at Multipart._write (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:567:19)\n    at writeOrBuffer (node:internal/streams/writable:564:12)","storageErrors":[],"timestamp":"2025-06-26T11:16:34.126Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:16:55.573Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:16:55.590Z"}
+{"code":"LIMIT_UNEXPECTED_FILE","field":"images","level":"error","message":"Unexpected field Unexpected field","name":"MulterError","stack":"MulterError: Unexpected field\n    at wrappedFileFilter (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\multer\\index.js:40:19)\n    at Multipart.<anonymous> (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\multer\\lib\\make-middleware.js:123:7)\n    at Multipart.emit (node:events:519:28)\n    at HeaderParser.cb (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:358:14)\n    at HeaderParser.push (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:162:20)\n    at SBMH.ssCb [as _cb] (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:394:37)\n    at feed (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\streamsearch\\lib\\sbmh.js:248:10)\n    at SBMH.push (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\streamsearch\\lib\\sbmh.js:104:16)\n    at Multipart._write (C:\\Users\\Abhijith KK\\Desktop\\Abijith\\Codeedex\\coffeelabs-backend\\node_modules\\busboy\\lib\\types\\multipart.js:567:19)\n    at writeOrBuffer (node:internal/streams/writable:564:12)","storageErrors":[],"timestamp":"2025-06-26T11:17:03.939Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:18:54.443Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:18:54.453Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:28:08.087Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:28:08.098Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T11:28:13.083Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T11:28:13.099Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T12:23:36.687Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T12:23:36.718Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T12:23:54.960Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T12:23:54.968Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T12:24:03.301Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T12:24:03.311Z"}
+{"level":"info","message":"MongoDB connected successfully","timestamp":"2025-06-26T12:24:23.298Z"}
+{"level":"info","message":"Server running on port 8000","timestamp":"2025-06-26T12:24:23.306Z"}

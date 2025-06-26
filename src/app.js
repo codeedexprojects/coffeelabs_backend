@@ -15,13 +15,14 @@ const userRoutes = require("./features/user/auth/UserRoute");
 const userProfileRoutes = require("./features/user/Profile/ProfileRoute");
 const userCategoryRoutes = require("./features/user/category/CategoryRoutes");
 const userSubCategoryRoutes = require("./features/user/subcategory/subCategoryRoutes");
+const userProductRoutes = require("./features/user/Product/ProductRoute");
 
 
 // adminRoutes
 const adminRoutes = require("./features/admin/auth/AdminRoute");
 const adminUserRoutes = require("./features/admin/User/UserRoutes");
 const adminDashboardRoutes = require("./features/admin/Dashboard/DashboardRoutes");
-
+const adminProductRoutes = require("./features/admin/Product/ProductRoutes");
 const adminCategoryRoutes = require("./features/admin/Category/CategoryRoutes");
 const adminSubcategoryRoutes = require("./features/admin/subCategory/subCategoryRoutes");
 
@@ -31,6 +32,7 @@ app.use("/userAuth", userRoutes);
 app.use("/userProfile", userProfileRoutes);
 app.use("/category", userCategoryRoutes);
 app.use("/subcategory", userSubCategoryRoutes);
+app.use("/products", userProductRoutes)
 
 
 // ADMIN
@@ -39,6 +41,7 @@ app.use("/admin/user", adminUserRoutes);
 app.use("/admin/category", adminCategoryRoutes);
 app.use("/admin/subcategory", adminSubcategoryRoutes)
 app.use("/admin/dashboard", adminDashboardRoutes)
+app.use("/admin/product", adminProductRoutes)
 
 
 app.use(errorMiddleware);

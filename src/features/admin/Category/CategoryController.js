@@ -1,4 +1,6 @@
 const Category = require('./CategoryModel');
+const SubCategory = require('../subCategory/subCategoryModel');
+
 const fs = require('fs');
 const path = require('path');
 
@@ -154,6 +156,7 @@ exports.updateCategory = async (req, res) => {
 };
 
 // delete category
+// delete category and its subcategories
 exports.deleteCategory = async (req, res) => {
     const { id } = req.params;
 
@@ -163,13 +166,33 @@ exports.deleteCategory = async (req, res) => {
             return res.status(404).json({ message: 'Category not found' });
         }
 
-        const imagePath = path.join(__dirname, `../uploads/admin/category/${category.image}`);
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
+        // First, find all subcategories belonging to this category
+        const subcategories = await SubCategory.find({ category_id: id });
+
+        // Delete all subcategory images
+        for (const subcategory of subcategories) {
+            const subcategoryImagePath = path.join(__dirname, `../uploads/admin/subcategory/${subcategory.image}`);
+            if (fs.existsSync(subcategoryImagePath)) {
+                fs.unlinkSync(subcategoryImagePath);
+            }
         }
 
+        // Delete all subcategories belonging to this category
+        await SubCategory.deleteMany({ category_id: id });
+
+        // Delete the category image
+        const categoryImagePath = path.join(__dirname, `../uploads/admin/category/${category.image}`);
+        if (fs.existsSync(categoryImagePath)) {
+            fs.unlinkSync(categoryImagePath);
+        }
+
+        // Delete the category
         await Category.findByIdAndDelete(id);
-        res.status(200).json({ message: 'Category deleted successfully' });
+
+        res.status(200).json({ 
+            message: 'Category and its subcategories deleted successfully',
+            deletedSubcategories: subcategories.length
+        });
     } catch (err) {
         res.status(500).json({ 
             message: 'Error deleting category', 
