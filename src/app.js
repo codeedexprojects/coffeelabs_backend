@@ -20,6 +20,8 @@ const userSubCategoryRoutes = require("./features/user/subcategory/subCategoryRo
 // adminRoutes
 const adminRoutes = require("./features/admin/auth/AdminRoute");
 const adminUserRoutes = require("./features/admin/User/UserRoutes");
+const adminDashboardRoutes = require("./features/admin/Dashboard/DashboardRoutes");
+
 const adminCategoryRoutes = require("./features/admin/Category/CategoryRoutes");
 const adminSubcategoryRoutes = require("./features/admin/subCategory/subCategoryRoutes");
 
@@ -36,6 +38,7 @@ app.use("/admin/auth", adminRoutes);
 app.use("/admin/user", adminUserRoutes);
 app.use("/admin/category", adminCategoryRoutes);
 app.use("/admin/subcategory", adminSubcategoryRoutes)
+app.use("/admin/dashboard", adminDashboardRoutes)
 
 
 app.use(errorMiddleware);
