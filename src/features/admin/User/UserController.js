@@ -1,8 +1,6 @@
 const User = require('../../user/auth/UserModel');
 const bcrypt = require('bcrypt');
 
-
-
 exports.createUser = async (req, res) => {
   const { name, email, phone, password, role } = req.body;
 
@@ -70,19 +68,57 @@ exports.createUser = async (req, res) => {
   }
 };
 
-
-
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find()
+    // Extract pagination parameters from query string
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    // Optional search functionality
+    const search = req.query.search || '';
+    const searchQuery = search ? {
+      $or: [
+        { name: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: 'i' } },
+        { phone: { $regex: search, $options: 'i' } }
+      ]
+    } : {};
+
+    // Optional role filter
+    const role = req.query.role;
+    if (role) {
+      searchQuery.role = role;
+    }
+
+    // Get total count for pagination info
+    const totalUsers = await User.countDocuments(searchQuery);
+    const totalPages = Math.ceil(totalUsers / limit);
+
+    // Get paginated users
+    const users = await User.find(searchQuery)
       .select('-password -__v -refreshToken')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    // Pagination info
+    const pagination = {
+      currentPage: page,
+      totalPages,
+      totalUsers,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+      nextPage: page < totalPages ? page + 1 : null,
+      prevPage: page > 1 ? page - 1 : null,
+      limit
+    };
 
     res.status(200).json({
       success: true,
       message: 'Users retrieved successfully',
       data: users,
-      count: users.length
+      pagination
     });
   } catch (error) {
     console.error('Get All Users Error:', error.message);
