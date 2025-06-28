@@ -69,12 +69,12 @@ exports.createProduct = async (req, res) => {
         });
     } catch (err) {
         // Handle duplicate key error
-        if (err.code === 11000) {
-            return res.status(400).json({
-                message: 'Product with this name already exists',
-                error: 'Duplicate product name'
-            });
-        }
+       if (err.code === 11000) {
+    return res.status(400).json({
+        message: 'Product with this name already exists in this subcategory',
+        error: 'Duplicate product name in subcategory'
+    });
+}
         res.status(500).json({
             message: 'Error creating product',
             error: err.message
@@ -247,12 +247,12 @@ exports.updateProduct = async (req, res) => {
             product: updatedProduct
         });
     } catch (err) {
-        if (err.code === 11000) {
-            return res.status(400).json({
-                message: 'Product with this name already exists',
-                error: 'Duplicate product name'
-            });
-        }
+       if (err.code === 11000) {
+    return res.status(400).json({
+        message: 'Product with this name already exists in this subcategory',
+        error: 'Duplicate product name in subcategory'
+    });
+}
         res.status(500).json({
             message: 'Error updating product',
             error: err.message

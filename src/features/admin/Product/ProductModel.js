@@ -87,6 +87,7 @@ const productSchema = new mongoose.Schema({
 productSchema.index({ name: 'text', description: 'text' });
 productSchema.index({ category: 1, sub_category: 1 });
 productSchema.index({ top_rated: 1, customer_picks: 1, todays_deal: 1 });
+productSchema.index({ name: 1, sub_category: 1 }, { unique: true });
 
 // Virtual for getting available variants
 productSchema.virtual('availableVariants').get(function() {
