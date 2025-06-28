@@ -7,10 +7,8 @@ const multerConfig = require('../../../middleware/multerConfig');
 // create product
 router.post('/create', verifyToken(['admin']), multerConfig.array('images'), Productcontroller.createProduct);
 
-
 // get all product
 router.get('/view', verifyToken(['admin']), Productcontroller.getAllProducts);
-
 
 // view by id
 router.get('/view/:id', verifyToken(['admin']), Productcontroller.getProductById);
@@ -21,5 +19,16 @@ router.patch('/update/:id', verifyToken(['admin']), multerConfig.array('images')
 // delete product
 router.delete('/delete/:id', verifyToken(['admin']), Productcontroller.deleteProduct);
 
+// Get Featured Products
+router.get('/featured', Productcontroller.getFeaturedProducts);
+
+// Add Variant
+router.post('/:id/variants', verifyToken(['admin']), Productcontroller.addVariant);
+
+// Update specific variant
+router.patch('/:productId/variants/:variantId', verifyToken(['admin']), Productcontroller.updateVariant);
+
+// Delete specific variant
+router.delete('/:productId/variants/:variantId', verifyToken(['admin']), Productcontroller.deleteVariant);
 
 module.exports = router;

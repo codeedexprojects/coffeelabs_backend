@@ -4,7 +4,6 @@ const SubCategory = require('../subCategory/subCategoryModel');
 const fs = require('fs');
 const path = require('path');
 
-// Create a new product
 exports.createProduct = async (req, res) => {
     const { 
         name, 
