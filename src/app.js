@@ -16,6 +16,7 @@ const userProfileRoutes = require("./features/user/Profile/ProfileRoute");
 const userCategoryRoutes = require("./features/user/category/CategoryRoutes");
 const userSubCategoryRoutes = require("./features/user/subcategory/subCategoryRoutes");
 const userProductRoutes = require("./features/user/Product/ProductRoute");
+const userCartRoutes = require("./features/user/Cart/CartRoutes");
 
 
 // adminRoutes
@@ -33,7 +34,7 @@ app.use("/userProfile", userProfileRoutes);
 app.use("/category", userCategoryRoutes);
 app.use("/subcategory", userSubCategoryRoutes);
 app.use("/products", userProductRoutes)
-
+app.use("/cart", userCartRoutes)
 
 // ADMIN
 app.use("/admin/auth", adminRoutes);

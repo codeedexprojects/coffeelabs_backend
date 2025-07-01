@@ -9,4 +9,6 @@ router.get('/counts', verifyAdminToken(['admin']), DashboardController.getDashbo
 // Route for detailed dashboard statistics  
 router.get('/statistics', verifyAdminToken(['admin']), DashboardController.getDashboardStatistics);
 
+router.get('/product/counts',verifyAdminToken(['admin']), DashboardController.getProductDashboard)
+
 module.exports = router;
