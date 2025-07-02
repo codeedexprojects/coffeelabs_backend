@@ -26,6 +26,10 @@ const cartItemSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: [0, "Subtotal cannot be negative"]
+    },
+    is_active: {
+        type: Boolean,
+        default: true
     }
 }, { 
     timestamps: true,
@@ -64,14 +68,49 @@ cartSchema.index({ user_id: 1 });
 cartSchema.index({ user_id: 1, is_active: 1 });
 cartSchema.index({ 'items.product': 1 });
 
-// Method to calculate totals
-cartSchema.methods.calculateTotals = function() {
-    this.total_quantity = this.items.reduce((total, item) => total + item.quantity, 0);
-    this.total_value = this.items.reduce((total, item) => total + item.subtotal, 0);
+// Method to update item active status based on stock
+cartSchema.methods.updateItemsActiveStatus = function() {
+    let hasChanges = false;
+    
+    this.items.forEach(item => {
+        const shouldBeActive = item.variant_details.stock > 0 && 
+                              item.variant_details.available && 
+                              item.quantity <= item.variant_details.stock;
+        
+        if (item.is_active !== shouldBeActive) {
+            item.is_active = shouldBeActive;
+            hasChanges = true;
+        }
+    });
+    
+    return hasChanges;
 };
 
-// Pre-save middleware to calculate totals
+// Method to calculate totals (only for active items)
+cartSchema.methods.calculateTotals = function() {
+    const activeItems = this.items.filter(item => item.is_active);
+    this.total_quantity = activeItems.reduce((total, item) => total + item.quantity, 0);
+    this.total_value = activeItems.reduce((total, item) => total + item.subtotal, 0);
+    
+    // Set cart as inactive if no active items
+    this.is_active = activeItems.length > 0;
+};
+
+// Method to remove inactive items
+cartSchema.methods.removeInactiveItems = function() {
+    const initialLength = this.items.length;
+    this.items = this.items.filter(item => item.is_active);
+    return this.items.length !== initialLength;
+};
+
+// Method to get only active items
+cartSchema.methods.getActiveItems = function() {
+    return this.items.filter(item => item.is_active);
+};
+
+// Pre-save middleware to update active status and calculate totals
 cartSchema.pre('save', function(next) {
+    this.updateItemsActiveStatus();
     this.calculateTotals();
     next();
 });

@@ -11,5 +11,6 @@ router.get('/:userId', verifyAdminToken(['admin']), userIdValidator, validationH
 router.post('/', verifyAdminToken(['admin']), registerUserValidator, validationHandler, UserController.createUser);
 router.patch('/:userId', verifyAdminToken(['admin']), userIdValidator, updateUserValidator, validationHandler, UserController.updateUserById);
 router.delete('/:userId', verifyAdminToken(['admin']), userIdValidator, validationHandler, UserController.deleteUserById);
+router.get('/:userId/cart', verifyAdminToken(['admin']), userIdValidator, validationHandler, UserController.getUserCart);
 
 module.exports = router;

@@ -165,7 +165,7 @@ exports.getProductById = async (req, res) => {
     }
 };
 
-// Update product
+
 exports.updateProduct = async (req, res) => {
     try {
         const { 
@@ -214,31 +214,59 @@ exports.updateProduct = async (req, res) => {
             updatedImages = req.files.map(file => file.filename);
         }
 
-        // Parse variants if provided
-        let parsedVariants = product.variants;
+        // Handle variants update - PRESERVE EXISTING IDs
+        let updatedVariants = product.variants;
         if (variants) {
             try {
-                parsedVariants = typeof variants === 'string' ? JSON.parse(variants) : variants;
+                const parsedVariants = typeof variants === 'string' ? JSON.parse(variants) : variants;
+                
+                // Map through parsed variants and preserve existing _id if it exists
+                updatedVariants = parsedVariants.map(newVariant => {
+                    if (newVariant._id) {
+                        // Find existing variant by _id
+                        const existingVariant = product.variants.find(v => v._id.toString() === newVariant._id.toString());
+                        if (existingVariant) {
+                            // Update existing variant while preserving _id
+                            return {
+                                _id: existingVariant._id, // Preserve existing _id
+                                variant_type: newVariant.variant_type || existingVariant.variant_type,
+                                price: newVariant.price !== undefined ? newVariant.price : existingVariant.price,
+                                stock: newVariant.stock !== undefined ? newVariant.stock : existingVariant.stock,
+                                available: newVariant.available !== undefined ? newVariant.available : existingVariant.available
+                            };
+                        }
+                    }
+                    // If no _id provided or variant not found, create new variant (Mongoose will assign new _id)
+                    return {
+                        variant_type: newVariant.variant_type,
+                        price: newVariant.price,
+                        stock: newVariant.stock,
+                        available: newVariant.available !== undefined ? newVariant.available : true
+                    };
+                });
             } catch (err) {
                 return res.status(400).json({ message: 'Invalid variants format' });
             }
         }
 
+        // Build update object
+        const updateData = {
+            ...(name && { name }),
+            ...(category && { category }),
+            ...(sub_category && { sub_category }),
+            ...(description !== undefined && { description }),
+            ...(top_rated !== undefined && { top_rated: top_rated === 'true' || top_rated === true }),
+            ...(customer_picks !== undefined && { customer_picks: customer_picks === 'true' || customer_picks === true }),
+            ...(todays_deal !== undefined && { todays_deal: todays_deal === 'true' || todays_deal === true }),
+            ...(weight_category && { weight_category }),
+            ...(is_available !== undefined && { is_available: is_available === 'true' || is_available === true }),
+            images: updatedImages,
+            variants: updatedVariants
+        };
+
         const updatedProduct = await Product.findByIdAndUpdate(
             req.params.id,
-            {
-                ...(name && { name }),
-                ...(category && { category }),
-                ...(sub_category && { sub_category }),
-                ...(description !== undefined && { description }),
-                ...(top_rated !== undefined && { top_rated: top_rated === 'true' || top_rated === true }),
-                ...(customer_picks !== undefined && { customer_picks: customer_picks === 'true' || customer_picks === true }),
-                ...(todays_deal !== undefined && { todays_deal: todays_deal === 'true' || todays_deal === true }),
-                ...(weight_category && { weight_category }),
-                ...(is_available !== undefined && { is_available: is_available === 'true' || is_available === true }),
-                images: updatedImages,
-                variants: parsedVariants
-            },
+            updateData,
             { new: true, runValidators: true }
         ).populate('category sub_category');
 
@@ -247,18 +275,19 @@ exports.updateProduct = async (req, res) => {
             product: updatedProduct
         });
     } catch (err) {
-       if (err.code === 11000) {
-    return res.status(400).json({
-        message: 'Product with this name already exists in this subcategory',
-        error: 'Duplicate product name in subcategory'
-    });
-}
+        if (err.code === 11000) {
+            return res.status(400).json({
+                message: 'Product with this name already exists in this subcategory',
+                error: 'Duplicate product name in subcategory'
+            });
+        }
         res.status(500).json({
             message: 'Error updating product',
             error: err.message
         });
     }
 };
+
 
 // Delete product
 exports.deleteProduct = async (req, res) => {
@@ -413,7 +442,16 @@ exports.deleteVariant = async (req, res) => {
             return res.status(404).json({ message: 'Product not found' });
         }
 
-        product.variants.id(variantId).remove();
+        // Find the index of the variant to remove
+        const variantIndex = product.variants.findIndex(v => v._id.toString() === variantId);
+        
+        if (variantIndex === -1) {
+            return res.status(404).json({ message: 'Variant not found' });
+        }
+
+        // Remove the variant from the array
+        product.variants.splice(variantIndex, 1);
+        
         await product.save();
 
         res.status(200).json({

@@ -1,6 +1,6 @@
 const User = require('../../user/auth/UserModel');
 const bcrypt = require('bcrypt');
-
+const Cart = require('../../user/Cart/CartModel')
 exports.createUser = async (req, res) => {
   const { name, email, phone, password, role } = req.body;
 
@@ -237,6 +237,81 @@ exports.deleteUserById = async (req, res) => {
     });
   } catch (error) {
     console.error('Delete User Error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      errors: [{ message: error.message }]
+    });
+  }
+};
+
+
+
+exports.getUserCart = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Check if user exists
+    const user = await User.findById(userId).select('-password -__v -refreshToken');
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        errors: [{ message: 'No user found with this ID' }]
+      });
+    }
+
+    // Find the user's active cart (single document)
+    const cart = await Cart.findOne({ user_id: userId, is_active: true })
+      .populate('items.product', 'name images weight_category price'); // Populate product details
+
+    if (!cart) {
+      return res.status(200).json({
+        success: true,
+        message: 'User cart is empty',
+        data: {
+          user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email
+          },
+          cartItems: [],
+          summary: {
+            totalItems: 0,
+            totalAmount: 0,
+            itemCount: 0
+          }
+        }
+      });
+    }
+
+    // Calculate cart summary
+    const totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+    const totalAmount = cart.items.reduce((sum, item) => {
+      return sum + (item.quantity * (item.variant_details?.price || 0));
+    }, 0);
+
+    const cartSummary = {
+      totalItems,
+      totalAmount: totalAmount.toFixed(2),
+      itemCount: cart.items.length
+    };
+
+    res.status(200).json({
+      success: true,
+      message: 'User cart retrieved successfully',
+      data: {
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email
+        },
+        cartItems: cart.items,
+        summary: cartSummary
+      }
+    });
+  } catch (error) {
+    console.error('Get User Cart Error:', error.message);
     res.status(500).json({
       success: false,
       message: 'Server error',

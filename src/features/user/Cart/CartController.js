@@ -42,10 +42,10 @@ exports.createOrUpdateCart = async (req, res) => {
         }
 
         // Validate variant availability and stock
-        if (!variant.available) {
+        if (!variant.available || variant.stock === 0) {
             return res.status(400).json({
                 success: false,
-                message: "Selected variant is not available"
+                message: "Selected variant is not available or out of stock"
             });
         }
 
@@ -88,8 +88,9 @@ exports.createOrUpdateCart = async (req, res) => {
                 stock: variant.stock,
                 available: variant.available
             };
+            // is_active will be updated automatically in pre-save middleware
         } else {
-            // Add new item to cart (different variant will be added as separate item)
+            // Add new item to cart
             const cartItem = {
                 product: product_id,
                 variant_id: variant_id,
@@ -100,7 +101,8 @@ exports.createOrUpdateCart = async (req, res) => {
                     stock: variant.stock,
                     available: variant.available
                 },
-                subtotal: quantity * variant.price
+                subtotal: quantity * variant.price,
+                is_active: variant.stock > 0 && variant.available && quantity <= variant.stock
             };
             cart.items.push(cartItem);
         }
@@ -165,10 +167,17 @@ exports.updateCartQuantity = async (req, res) => {
         const product = await Product.findById(product_id);
         const variant = product.variants.id(variant_id);
 
-        if (!variant || !variant.available || variant.stock < quantity) {
+        if (!variant || !variant.available || variant.stock === 0) {
             return res.status(400).json({
                 success: false,
-                message: `Insufficient stock. Only ${variant?.stock || 0} items available`
+                message: "Product variant is no longer available or out of stock"
+            });
+        }
+
+        if (variant.stock < quantity) {
+            return res.status(400).json({
+                success: false,
+                message: `Insufficient stock. Only ${variant.stock} items available`
             });
         }
 
@@ -181,6 +190,7 @@ exports.updateCartQuantity = async (req, res) => {
             stock: variant.stock,
             available: variant.available
         };
+        // is_active will be updated automatically in pre-save middleware
 
         await cart.save();
         await cart.populate('items.product', 'name images weight_category');
@@ -264,7 +274,7 @@ exports.removeProductFromCart = async (req, res) => {
 // Get user cart
 exports.getCart = async (req, res) => {
     try {
-        const userId = req.user.id; // Get user ID from the token
+        const userId = req.user.id;
 
         // Find user cart with populated product details
         const cart = await Cart.findOne({ user_id: userId, is_active: true })
@@ -281,7 +291,8 @@ exports.getCart = async (req, res) => {
                 data: {
                     items: [],
                     total_quantity: 0,
-                    total_value: 0
+                    total_value: 0,
+                    inactive_items: []
                 }
             });
         }
@@ -289,35 +300,55 @@ exports.getCart = async (req, res) => {
         // Filter out items where product is no longer available
         cart.items = cart.items.filter(item => item.product !== null);
 
-        // Validate and update pricing for each item
+        // Validate and update stock information for each item
         let hasChanges = false;
+        const inactiveItems = [];
+        
         for (let item of cart.items) {
             const currentVariant = item.product.variants.id(item.variant_id);
-            if (currentVariant && currentVariant.available) {
-                // Update variant details if price changed
-                if (item.variant_details.price !== currentVariant.price) {
-                    item.variant_details.price = currentVariant.price;
+            if (currentVariant) {
+                // Update variant details
+                const oldStock = item.variant_details.stock;
+                item.variant_details = {
+                    variant_type: currentVariant.variant_type,
+                    price: currentVariant.price,
+                    stock: currentVariant.stock,
+                    available: currentVariant.available
+                };
+
+                // Update subtotal if price changed
+                if (item.variant_details.price !== (item.subtotal / item.quantity)) {
                     item.subtotal = item.quantity * currentVariant.price;
                     hasChanges = true;
                 }
-                item.variant_details.stock = currentVariant.stock;
-                item.variant_details.available = currentVariant.available;
+
+                // Check if stock changed
+                if (oldStock !== currentVariant.stock) {
+                    hasChanges = true;
+                }
             } else {
-                // Remove unavailable variants
-                cart.items = cart.items.filter(i => i._id.toString() !== item._id.toString());
+                // Variant no longer exists
+                item.variant_details.available = false;
+                item.variant_details.stock = 0;
                 hasChanges = true;
             }
         }
 
+        // Update active status and save if needed
         if (hasChanges) {
+            cart.updateItemsActiveStatus();
             await cart.save();
         }
+
+        // Separate active and inactive items
+        const activeItems = cart.getActiveItems();
+        const allInactiveItems = cart.items.filter(item => !item.is_active);
 
         // Format response data
         const formattedCart = {
             _id: cart._id,
             user_id: cart.user_id,
-            items: cart.items.map(item => ({
+            items: activeItems.map(item => ({
                 _id: item._id,
                 product: {
                     _id: item.product._id,
@@ -333,7 +364,28 @@ exports.getCart = async (req, res) => {
                     available: item.variant_details.available
                 },
                 quantity: item.quantity,
-                subtotal: item.subtotal
+                subtotal: item.subtotal,
+                is_active: item.is_active
+            })),
+            inactive_items: allInactiveItems.map(item => ({
+                _id: item._id,
+                product: {
+                    _id: item.product._id,
+                    name: item.product.name,
+                    images: item.product.images,
+                    weight_category: item.product.weight_category
+                },
+                variant: {
+                    _id: item.variant_id,
+                    variant_type: item.variant_details.variant_type,
+                    price: item.variant_details.price,
+                    stock: item.variant_details.stock,
+                    available: item.variant_details.available
+                },
+                quantity: item.quantity,
+                subtotal: item.subtotal,
+                is_active: item.is_active,
+                reason: item.variant_details.stock === 0 ? 'Out of stock' : 'Not available'
             })),
             total_quantity: cart.total_quantity,
             total_value: cart.total_value,
@@ -425,6 +477,7 @@ exports.getAllCarts = async (req, res) => {
             _id: cart._id,
             user_id: cart.user_id,
             total_items: cart.items.length,
+            active_items: cart.getActiveItems().length,
             total_quantity: cart.total_quantity,
             total_value: cart.total_value,
             last_updated: cart.updatedAt,
@@ -433,7 +486,9 @@ exports.getAllCarts = async (req, res) => {
                 variant_type: item.variant_details.variant_type,
                 quantity: item.quantity,
                 price: item.variant_details.price,
-                subtotal: item.subtotal
+                subtotal: item.subtotal,
+                is_active: item.is_active,
+                stock: item.variant_details.stock
             }))
         }));
 
@@ -450,6 +505,36 @@ exports.getAllCarts = async (req, res) => {
 
     } catch (error) {
         console.error('Get all carts error:', error);
+        res.status(500).json({
+            success: false,
+            message: "Internal server error",
+            error: error.message
+        });
+    }
+};
+
+// New function to clean up inactive items from all carts
+exports.cleanupInactiveItems = async (req, res) => {
+    try {
+        const carts = await Cart.find({ is_active: true });
+        let totalCleaned = 0;
+        
+        for (let cart of carts) {
+            const removed = cart.removeInactiveItems();
+            if (removed) {
+                await cart.save();
+                totalCleaned++;
+            }
+        }
+
+        res.status(200).json({
+            success: true,
+            message: `Cleaned up inactive items from ${totalCleaned} carts`,
+            data: { carts_cleaned: totalCleaned }
+        });
+
+    } catch (error) {
+        console.error('Cleanup inactive items error:', error);
         res.status(500).json({
             success: false,
             message: "Internal server error",
