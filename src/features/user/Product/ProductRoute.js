@@ -5,6 +5,8 @@ const UserProductController = require('./ProductController');
 // Get all products with filtering (public route - no auth needed)
 router.get('/', UserProductController.getAllProducts);
 
+router.get('/filter', UserProductController.filterByFlags);
+
 // Get product by ID (public route - no auth needed) 
 router.get('/:id', UserProductController.getProductById);
 
@@ -18,8 +20,10 @@ router.get('/subcategory/:subCategoryId', UserProductController.getProductsBySub
 router.get('/weight/:weightCategory', UserProductController.getProductsByWeightCategory);
 
 // Get featured products (top rated, customer picks, today's deals)
-router.get('/featured/:type', UserProductController.getFeaturedProducts);
+router.get('/:type', UserProductController.getFeaturedProducts);
 
+
+router.get('/filter/type', UserProductController.filterByFlags);
 // Search products
 router.get('/search/:query', UserProductController.searchProducts);
 

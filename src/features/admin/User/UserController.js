@@ -263,7 +263,7 @@ exports.getUserCart = async (req, res) => {
 
     // Find the user's active cart (single document)
     const cart = await Cart.findOne({ user_id: userId, is_active: true })
-      .populate('items.product', 'name images weight_category price'); // Populate product details
+      .populate('items.product', 'name images weight_category price'); 
 
     if (!cart) {
       return res.status(200).json({

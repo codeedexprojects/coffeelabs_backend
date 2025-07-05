@@ -614,3 +614,98 @@ exports.searchProducts = async (req, res) => {
         });
     }
 };
+
+
+// New controller for boolean flag filtering
+exports.filterByFlags = async (req, res) => {
+    try {
+        const { 
+            page = 1, 
+            limit = 12,
+            top_rated,
+            customer_picks,
+            todays_deal,
+            sort = 'newest'
+        } = req.query;
+
+        // Build filter object
+        const filter = { is_available: true };
+        
+        // Add boolean flag filters
+        if (top_rated !== undefined) {
+            filter.top_rated = top_rated === 'true';
+        }
+        if (customer_picks !== undefined) {
+            filter.customer_picks = customer_picks === 'true';
+        }
+        if (todays_deal !== undefined) {
+            filter.todays_deal = todays_deal === 'true';
+        }
+
+        // Validate at least one filter is provided
+        if (!top_rated && !customer_picks && !todays_deal) {
+            return res.status(400).json({
+                success: false,
+                message: 'At least one filter (top_rated, customer_picks, or todays_deal) must be provided'
+            });
+        }
+
+        const skip = (parseInt(page) - 1) * parseInt(limit);
+
+        // Sorting options
+        let sortOptions = {};
+        switch (sort) {
+            case 'price_low':
+                sortOptions = { 'variants.price': 1 };
+                break;
+            case 'price_high':
+                sortOptions = { 'variants.price': -1 };
+                break;
+            case 'name_asc':
+                sortOptions = { name: 1 };
+                break;
+            case 'name_desc':
+                sortOptions = { name: -1 };
+                break;
+            default: // newest
+                sortOptions = { createdAt: -1 };
+        }
+
+        // Execute query
+        const products = await Product.find(filter)
+            .populate('category', 'name image')
+            .populate('sub_category', 'name')
+            .sort(sortOptions)
+            .skip(skip)
+            .limit(parseInt(limit));
+
+        const total = await Product.countDocuments(filter);
+
+        res.status(200).json({
+            success: true,
+            message: 'Products filtered successfully',
+            data: {
+                products,
+                filters: {
+                    top_rated,
+                    customer_picks,
+                    todays_deal,
+                    sort
+                },
+                pagination: {
+                    currentPage: parseInt(page),
+                    totalPages: Math.ceil(total / parseInt(limit)),
+                    totalProducts: total,
+                    hasNext: skip + products.length < total,
+                    hasPrev: parseInt(page) > 1
+                }
+            }
+        });
+    } catch (err) {
+        res.status(500).json({
+            success: false,
+            message: 'Error filtering products',
+            error: err.message
+        });
+    }
+};

@@ -4,7 +4,6 @@ const { generateAccessToken, generateRefreshToken } = require('../../../utils/to
 
 exports.registerUser = async (req, res) => {
   const { name, email, phone, password } = req.body;
-
   try {
     const existingUser = await User.findOne({
       $or: [

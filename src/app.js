@@ -17,6 +17,8 @@ const userCategoryRoutes = require("./features/user/category/CategoryRoutes");
 const userSubCategoryRoutes = require("./features/user/subcategory/subCategoryRoutes");
 const userProductRoutes = require("./features/user/Product/ProductRoute");
 const userCartRoutes = require("./features/user/Cart/CartRoutes");
+const userAddressRoutes = require("./features/user/Address/AddressRoutes");
+
 
 
 // adminRoutes
@@ -35,6 +37,8 @@ app.use("/category", userCategoryRoutes);
 app.use("/subcategory", userSubCategoryRoutes);
 app.use("/products", userProductRoutes)
 app.use("/cart", userCartRoutes)
+app.use("/address", userAddressRoutes)
+
 
 // ADMIN
 app.use("/admin/auth", adminRoutes);
